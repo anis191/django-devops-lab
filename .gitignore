@@ -12,3 +12,5 @@ wheels/
 
 # Redis production config
 redis/redis.conf
+db.sqlite3
+redis_data/
