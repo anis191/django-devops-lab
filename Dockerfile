@@ -19,7 +19,7 @@ RUN uv sync --locked --no-dev
 COPY . .
 
 # Collect static files at build time (WhiteNoise)
-RUN uv run python manage.py collectstatic --noinput
+# RUN uv run python manage.py collectstatic --noinput
 
 # Copy start script and make executable
 COPY start.sh .
