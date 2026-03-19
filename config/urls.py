@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import fetch_posts
+from core.views import fetch_posts, cache_test
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', fetch_posts),
+    path('cache-test/', cache_test, name='cache_test'),
     path('posts/', fetch_posts, name="fetch_posts"),
 ]

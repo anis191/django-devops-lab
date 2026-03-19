@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Cache Test{% endblock %}
+
+{% block content %}
+
+<div class="max-w-lg mx-auto mt-8 sm:mt-16 animate-fade-in">
+
+    <!-- Card -->
+    <div class="bg-white border border-border rounded-xl shadow-sm overflow-hidden">
+
+        <!-- Card header — color changes based on hit/miss -->
+        {% if status == 'hit' %}
+            <div class="bg-green-50 border-b border-green-100 px-5 sm:px-8 py-4 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-4 h-4 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium uppercase tracking-widest text-success/80">Cache HIT</p>
+                    <p class="text-sm sm:text-base font-semibold text-green-900">Served from Redis</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="bg-amber-50 border-b border-amber-100 px-5 sm:px-8 py-4 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-warning/10 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-4 h-4 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium uppercase tracking-widest text-warning/80">Cache MISS</p>
+                    <p class="text-sm sm:text-base font-semibold text-amber-900">Computed fresh &amp; cached</p>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Card body -->
+        <div class="px-5 sm:px-8 py-5 sm:py-6 flex flex-col gap-4">
+
+            <!-- Info rows -->
+            <dl class="grid grid-cols-1 gap-3">
+
+                <div class="flex items-start justify-between gap-4 py-2.5 border-b border-border">
+                    <dt class="text-xs sm:text-sm text-muted font-medium w-28 flex-shrink-0">Status</dt>
+                    <dd class="text-xs sm:text-sm font-semibold text-right
+                        {% if status == 'hit' %}text-success{% else %}text-warning{% endif %}">
+                        {% if status == 'hit' %}✓ Hit — data from cache{% else %}✗ Miss — data recomputed{% endif %}
+                    </dd>
+                </div>
+
+                <div class="flex items-start justify-between gap-4 py-2.5 border-b border-border">
+                    <dt class="text-xs sm:text-sm text-muted font-medium w-28 flex-shrink-0">Computed at</dt>
+                    <dd class="font-mono text-xs sm:text-sm text-ink text-right">{{ computed_at }}</dd>
+                </div>
+
+                <div class="flex items-start justify-between gap-4 py-2.5 border-b border-border">
+                    <dt class="text-xs sm:text-sm text-muted font-medium w-28 flex-shrink-0">Cache key</dt>
+                    <dd class="font-mono text-xs sm:text-sm text-ink bg-gray-50 border border-border px-2 py-0.5 rounded">test_key</dd>
+                </div>
+
+                <div class="flex items-start justify-between gap-4 py-2.5">
+                    <dt class="text-xs sm:text-sm text-muted font-medium w-28 flex-shrink-0">TTL</dt>
+                    <dd class="text-xs sm:text-sm text-ink font-medium">{{ ttl }} seconds
+                        <span class="text-muted font-normal">— expires {{ ttl }}s after first load</span>
+                    </dd>
+                </div>
+
+            </dl>
+
+            <!-- How it works note -->
+            <div class="bg-gray-50 border border-border rounded-lg px-4 py-3 text-xs sm:text-sm text-muted leading-relaxed">
+                💡 <strong class="text-ink font-medium">How it works:</strong>
+                On a <span class="font-medium text-warning">Miss</span>, the value is computed and stored in Redis for {{ ttl }}s.
+                On a <span class="font-medium text-success">Hit</span>, Redis returns the cached value instantly — no recomputation.
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-1">
+                <a href="{% url 'cache_test' %}"
+                   class="flex-1 text-center bg-brand hover:bg-blue-700 text-white text-sm sm:text-base font-medium px-4 py-2 sm:py-2.5 rounded-lg transition-colors duration-150">
+                    Refresh to Test Again
+                </a>
+                <a href="{% url 'fetch_posts' %}"
+                   class="flex-1 text-center bg-white hover:bg-gray-50 text-ink text-sm sm:text-base font-medium px-4 py-2 sm:py-2.5 rounded-lg border border-border transition-colors duration-150">
+                    View Posts
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom note -->
+    <p class="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-muted">
+        TTL and backend configured in
+        <span class="font-mono bg-gray-100 px-1.5 py-0.5 rounded border border-border text-ink">settings.py → CACHES</span>
+    </p>
+
+</div>
+
+{% endblock %}

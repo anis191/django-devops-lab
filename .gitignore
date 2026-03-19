@@ -14,3 +14,5 @@ wheels/
 redis/redis.conf
 db.sqlite3
 redis_data/
+
+note.txt

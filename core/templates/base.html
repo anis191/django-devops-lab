@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Cache Lab{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand:        '#2563eb',
+                        'brand-light':'#eff6ff',
+                        surface:      '#ffffff',
+                        muted:        '#6b7280',
+                        border:       '#e5e7eb',
+                        subtle:       '#f9fafb',
+                        success:      '#16a34a',
+                        warning:      '#d97706',
+                        ink:          '#111827',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%':   { opacity: '0', transform: 'translateY(8px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease both',
+                    },
+                }
+            }
+        }
+    </script>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50 text-ink font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- NAV -->
+    <header class="bg-white border-b border-border sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-12 sm:h-14 flex items-center justify-between">
+
+            <a href="{% url 'fetch_posts' %}" class="flex items-center gap-2 font-semibold text-ink text-sm sm:text-base tracking-tight hover:text-brand transition-colors">
+                <span class="w-6 h-6 sm:w-7 sm:h-7 rounded bg-brand flex items-center justify-center flex-shrink-0">
+                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </span>
+                <span class="hidden xs:inline sm:inline">Django Cache Lab</span>
+                <span class="inline sm:hidden">Cache Lab</span>
+            </a>
+
+            <nav class="flex items-center gap-0.5 sm:gap-1">
+                <a href="{% url 'fetch_posts' %}"
+                   class="text-muted hover:text-ink hover:bg-gray-100 text-sm sm:text-base px-2.5 sm:px-3 py-1.5 rounded-md transition-all duration-150 font-medium">
+                    Posts
+                </a>
+                <a href="{% url 'cache_test' %}"
+                   class="text-muted hover:text-ink hover:bg-gray-100 text-sm sm:text-base px-2.5 sm:px-3 py-1.5 rounded-md transition-all duration-150 font-medium">
+                    Cache Test
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-5 sm:py-8 flex-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-border bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between text-xs sm:text-sm text-muted">
+            <span>Django Cache Lab</span>
+            <span class="hidden sm:inline">Powered by Django &amp; Redis</span>
+            <span class="inline sm:hidden">Django &amp; Redis</span>
+        </div>
+    </footer>
+
+</body>
+</html>
