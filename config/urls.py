@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', fetch_posts),
     path('cache-test/', cache_test, name='cache_test'),
-    # path('posts/', fetch_posts, name="fetch_posts"),
+    path('posts/', fetch_posts, name="fetch_posts"),
 ]
